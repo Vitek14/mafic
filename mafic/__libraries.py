@@ -51,12 +51,12 @@ if not getenv("MAFIC_IGNORE_LIBRARY_CHECK"):
         # Ignore RuntimeWarning as we import the warning to filter :}
         simplefilter("ignore", RuntimeWarning)
         try:
-            from nextcord.health_check import DistributionWarning
+            from nextcord.health_check import DistributionWarning  # type: ignore
         except ImportError:
             # nextcord >= 3.0
             pass
         else:
-            simplefilter("ignore", DistributionWarning)
+            simplefilter("ignore", DistributionWarning)  # type: ignore
         finally:
             simplefilter("always", RuntimeWarning)
 
