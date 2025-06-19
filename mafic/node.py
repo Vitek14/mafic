@@ -1114,7 +1114,7 @@ class Node(Generic[ClientT]):
             uri,
             json=json,
             params=params,
-            headers={"Authorization": self.__password}
+            headers={"Authorization": self.__password},
         ) as resp:
             _log.debug("Received status %s from lavalink.", resp.status)
             if resp.status == 204:
@@ -1410,9 +1410,8 @@ class Node(Generic[ClientT]):
             Skip the current track source and fetch from highest priority source
         """
         data = await self.__request(
-            "POST", f"sessions/{self._session_id}/players/{guild_id}/lyrics/subscribe",
-            params={
-                "skipTrackSource": str(skip_track_source)
-            }
+            "POST",
+            f"sessions/{self._session_id}/players/{guild_id}/lyrics/subscribe",
+            params={"skipTrackSource": str(skip_track_source)},
         )
         _log.debug("Subscribe data: %s", data)

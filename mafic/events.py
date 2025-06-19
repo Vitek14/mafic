@@ -33,7 +33,7 @@ __all__ = (
     "WebSocketClosedEvent",
     "LyricsLineEvent",
     "LyricsFoundEvent",
-    "LyricsNotFoundEvent"
+    "LyricsNotFoundEvent",
 )
 
 
@@ -102,7 +102,9 @@ class LyricsLineEvent(Generic[PlayerT]):
     line: :class:`dict`
         Information about the lyrics line.
     """
+
     __slots__ = ("guildId", "line")
+
     def __init__(self, *, guildId: str, line: dict) -> None:
         self.guildId: str = guildId
         self.line: dict = line
@@ -122,6 +124,7 @@ class LyricsFoundEvent(Generic[PlayerT]):
     lyrics: :class:`dict`
         Information about all lyrics, including provider and platform.
     """
+
     __slots__ = ("guildId", "lyrics")
 
     def __init__(self, *, guildId: str, lyrics: dict) -> None:
@@ -141,7 +144,8 @@ class LyricsNotFoundEvent(Generic[PlayerT]):
     guildId: :class:`str`
         The guild ID that received event.
     """
-    __slots__ = ("guildId")
+
+    __slots__ = "guildId"
 
     def __init__(self, *, guildId: str) -> None:
         self.guildId: str = guildId
