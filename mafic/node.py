@@ -1114,7 +1114,7 @@ class Node(Generic[ClientT]):
             uri,
             json=json,
             params=params,
-            headers={"Authorization": self.__password},
+            headers={"Authorization": self.__password}
         ) as resp:
             _log.debug("Received status %s from lavalink.", resp.status)
             if resp.status == 204:
@@ -1397,3 +1397,22 @@ class Node(Generic[ClientT]):
                 for player_id in expected_player_ids - actual_player_ids
             ),
         )
+
+    async def subscribe_to_lyrics(self, guild_id: int, skip_track_source: bool) -> None:
+        """
+        Subscribe to Lyrics events. Requires Lavalyrics plugin to be installed.
+
+        Parameters
+        ----------
+        guild_id:
+            The guild that will receive lyrics events
+        skip_track_source:
+            Skip the current track source and fetch from highest priority source
+        """
+        data = await self.__request(
+            "POST", f"sessions/{self._session_id}/players/{guild_id}/lyrics/subscribe",
+            params={
+                "skipTrackSource": str(skip_track_source)
+            }
+        )
+        _log.debug("Subscribe data: %s", data)
