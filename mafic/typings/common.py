@@ -33,7 +33,7 @@ __all__ = (
     "FrameStats",
     "Stats",
     "LyricsObject",
-    "LyricsLine"
+    "LyricsLine",
 )
 
 

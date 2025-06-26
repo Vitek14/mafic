@@ -9,7 +9,7 @@ from enum import Enum
 from typing import TYPE_CHECKING, Generic, TypeVar
 
 from .__libraries import VoiceProtocol
-from .typings.common import LyricsObject, LyricsLine
+from .typings.common import LyricsLine, LyricsObject
 
 if TYPE_CHECKING:
     from .track import Track
@@ -34,7 +34,7 @@ __all__ = (
     "WebSocketClosedEvent",
     "LyricsLineEvent",
     "LyricsFoundEvent",
-    "LyricsNotFoundEvent"
+    "LyricsNotFoundEvent",
 )
 
 
@@ -78,7 +78,7 @@ class WebSocketClosedEvent(Generic[PlayerT]):
     __slots__ = ("code", "reason", "by_discord", "player")
 
     def __init__(
-            self, *, payload: WebSocketClosedEventPayload, player: PlayerT
+        self, *, payload: WebSocketClosedEventPayload, player: PlayerT
     ) -> None:
         self.code: int = payload["code"]
         self.reason: str = payload["reason"]
@@ -103,6 +103,7 @@ class LyricsLineEvent(Generic[PlayerT]):
     line: :class:`LyricsLine`
         Information about the lyrics line.
     """
+
     __slots__ = ("guildId", "line")
 
     def __init__(self, *, guildId: str, line: LyricsLine) -> None:
@@ -124,6 +125,7 @@ class LyricsFoundEvent(Generic[PlayerT]):
     lyrics: :class:`LyricsObject`
         Information about all lyrics, including provider and platform.
     """
+
     __slots__ = ("guildId", "lyrics")
 
     def __init__(self, *, guildId: str, lyrics: LyricsObject) -> None:
@@ -143,6 +145,7 @@ class LyricsNotFoundEvent(Generic[PlayerT]):
     guildId: :class:`str`
         The guild ID that received event.
     """
+
     __slots__ = ("guildId",)
 
     def __init__(self, *, guildId: str) -> None:
@@ -191,7 +194,7 @@ class TrackEndEvent(Generic[PlayerT]):
     __slots__ = ("track", "reason", "player")
 
     def __init__(
-            self, *, track: Track, payload: TrackEndEventPayload, player: PlayerT
+        self, *, track: Track, payload: TrackEndEventPayload, player: PlayerT
     ) -> None:
         self.track: Track = track
         reason = payload["reason"]
@@ -224,11 +227,11 @@ class TrackExceptionEvent(Generic[PlayerT]):
     __slots__ = ("track", "exception", "player")
 
     def __init__(
-            self,
-            *,
-            track: Track,
-            payload: TrackExceptionEventPayload,
-            player: PlayerT,
+        self,
+        *,
+        track: Track,
+        payload: TrackExceptionEventPayload,
+        player: PlayerT,
     ) -> None:
         self.track: Track = track
         self.exception: LavalinkException = payload["exception"]
@@ -257,7 +260,7 @@ class TrackStuckEvent(Generic[PlayerT]):
     __slots__ = ("track", "threshold_ms", "player")
 
     def __init__(
-            self, *, track: Track, payload: TrackStuckEventPayload, player: PlayerT
+        self, *, track: Track, payload: TrackStuckEventPayload, player: PlayerT
     ) -> None:
         self.track: Track = track
         self.threshold_ms: int = payload["thresholdMs"]

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, TypedDict, Union
 
-from .common import Stats, TrackWithInfo, LyricsLine, LyricsObject
+from .common import LyricsLine, LyricsObject, Stats, TrackWithInfo
 from .misc import PayloadWithGuild
 
 if TYPE_CHECKING:
@@ -26,7 +26,7 @@ __all__ = (
     "WebSocketClosedEvent",
     "LyricsFoundEvent",
     "LyricsNotFoundEvent",
-    "LyricsLineEvent"
+    "LyricsLineEvent",
 )
 
 
