@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal, TypedDict
 
+from . import PluginData
 from .misc import PayloadWithGuild
 
 if TYPE_CHECKING:
@@ -31,6 +32,7 @@ __all__ = (
     "CPU",
     "FrameStats",
     "Stats",
+    "LyricsLine"
 )
 
 
@@ -173,3 +175,18 @@ class Stats(TypedDict):
     cpu: CPU
     # V3 is NotRequired, V4 is None
     frameStats: NotRequired[FrameStats | None]
+
+
+class LyricsObject(TypedDict):
+    sourceName: str
+    provider: str
+    text: str
+    lines: list[LyricsLine]
+    plugin: PluginData
+
+
+class LyricsLine(TypedDict):
+    timestamp: int
+    duration: int
+    line: str
+    plugin: PluginData
