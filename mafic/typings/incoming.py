@@ -24,6 +24,9 @@ __all__ = (
     "TrackStartEvent",
     "TrackStuckEvent",
     "WebSocketClosedEvent",
+    "LyricsFoundEvent",
+    "LyricsNotFoundEvent",
+    "LyricsLineEvent"
 )
 
 
