@@ -32,6 +32,7 @@ __all__ = (
     "CPU",
     "FrameStats",
     "Stats",
+    "LyricsObject",
     "LyricsLine"
 )
 
