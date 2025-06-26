@@ -34,7 +34,7 @@ __all__ = (
     "WebSocketClosedEvent",
     "LyricsLineEvent",
     "LyricsFoundEvent",
-    "LyricsNotFoundEvent"
+    "LyricsNotFoundEvent",
 )
 
 
@@ -78,7 +78,7 @@ class WebSocketClosedEvent(Generic[PlayerT]):
     __slots__ = ("code", "reason", "by_discord", "player")
 
     def __init__(
-            self, *, payload: WebSocketClosedEventPayload, player: PlayerT
+        self, *, payload: WebSocketClosedEventPayload, player: PlayerT
     ) -> None:
         self.code: int = payload["code"]
         self.reason: str = payload["reason"]
@@ -194,7 +194,7 @@ class TrackEndEvent(Generic[PlayerT]):
     __slots__ = ("track", "reason", "player")
 
     def __init__(
-            self, *, track: Track, payload: TrackEndEventPayload, player: PlayerT
+        self, *, track: Track, payload: TrackEndEventPayload, player: PlayerT
     ) -> None:
         self.track: Track = track
         reason = payload["reason"]
@@ -227,11 +227,11 @@ class TrackExceptionEvent(Generic[PlayerT]):
     __slots__ = ("track", "exception", "player")
 
     def __init__(
-            self,
-            *,
-            track: Track,
-            payload: TrackExceptionEventPayload,
-            player: PlayerT,
+        self,
+        *,
+        track: Track,
+        payload: TrackExceptionEventPayload,
+        player: PlayerT,
     ) -> None:
         self.track: Track = track
         self.exception: LavalinkException = payload["exception"]
@@ -260,7 +260,7 @@ class TrackStuckEvent(Generic[PlayerT]):
     __slots__ = ("track", "threshold_ms", "player")
 
     def __init__(
-            self, *, track: Track, payload: TrackStuckEventPayload, player: PlayerT
+        self, *, track: Track, payload: TrackStuckEventPayload, player: PlayerT
     ) -> None:
         self.track: Track = track
         self.threshold_ms: int = payload["thresholdMs"]
