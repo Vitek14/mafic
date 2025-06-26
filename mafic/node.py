@@ -34,7 +34,7 @@ from .typings import (
     NanoIPRouteDetails,
     RotatingIPRouteDetails,
     RotatingNanoIPRouteDetails,
-    TrackWithInfo,
+    TrackWithInfo, LyricsObject,
 )
 from .warnings import *
 
@@ -71,7 +71,7 @@ __all__ = ("Node",)
 
 
 def _wrap_regions(
-    regions: Sequence[Group | Region | VoiceRegion] | None,
+        regions: Sequence[Group | Region | VoiceRegion] | None,
 ) -> list[VoiceRegion] | None:
     r"""Convert a list of voice regions, regions and groups into a list of regions.
 
@@ -97,7 +97,7 @@ def _wrap_regions(
         elif isinstance(item, Region):
             actual_regions.extend(item.value)
         elif isinstance(
-            item, VoiceRegion
+                item, VoiceRegion
         ):  # pyright: ignore[reportUnnecessaryIsInstance]
             actual_regions.append(item)
         else:
@@ -202,21 +202,21 @@ class Node(Generic[ClientT]):
     )
 
     def __init__(
-        self,
-        *,
-        host: str,
-        port: int,
-        label: str,
-        password: str,
-        client: ClientT,
-        secure: bool = False,
-        heartbeat: int = 30,
-        timeout: float = 10,
-        session: aiohttp.ClientSession | None = None,
-        resume_key: str | None = None,
-        regions: Sequence[Group | Region | VoiceRegion] | None = None,
-        shard_ids: Sequence[int] | None = None,
-        resuming_session_id: str | None = None,
+            self,
+            *,
+            host: str,
+            port: int,
+            label: str,
+            password: str,
+            client: ClientT,
+            secure: bool = False,
+            heartbeat: int = 30,
+            timeout: float = 10,
+            session: aiohttp.ClientSession | None = None,
+            resume_key: str | None = None,
+            regions: Sequence[Group | Region | VoiceRegion] | None = None,
+            shard_ids: Sequence[int] | None = None,
+            resuming_session_id: str | None = None,
     ) -> None:
         self._host = host
         self._port = port
@@ -231,9 +231,9 @@ class Node(Generic[ClientT]):
         self.regions: list[VoiceRegion] | None = _wrap_regions(regions)
 
         self._rest_uri = yarl.URL.build(
-            scheme=f"http{'s'*secure}", host=host, port=port
+            scheme=f"http{'s' * secure}", host=host, port=port
         )
-        self._ws_uri = yarl.URL.build(scheme=f"ws{'s'*secure}", host=host, port=port)
+        self._ws_uri = yarl.URL.build(scheme=f"ws{'s' * secure}", host=host, port=port)
         self._resume_key = resume_key or f"{host}:{port}:{label}"
         self._resuming_session_id: str = resuming_session_id or ""
 
@@ -505,8 +505,8 @@ class Node(Generic[ClientT]):
             self.__session = await self._create_session()
 
         async with self.__session.get(
-            self._rest_uri / "version",
-            headers={"Authorization": self.__password},
+                self._rest_uri / "version",
+                headers={"Authorization": self.__password},
         ) as resp:
             # Only the major and minor are needed.
             version = await resp.text()
@@ -544,7 +544,7 @@ class Node(Generic[ClientT]):
             return major
 
     async def _connect_to_websocket(
-        self, headers: dict[str, str], session: aiohttp.ClientSession
+            self, headers: dict[str, str], session: aiohttp.ClientSession
     ) -> None:
         """Connect to the websocket of the node.
 
@@ -574,10 +574,10 @@ class Node(Generic[ClientT]):
             raise
 
     async def connect(
-        self,
-        *,
-        backoff: ExponentialBackoff[Literal[False]] | None = None,
-        player_cls: type[Player[ClientT]] | None = None,
+            self,
+            *,
+            backoff: ExponentialBackoff[Literal[False]] | None = None,
+            player_cls: type[Player[ClientT]] | None = None,
     ) -> None:
         """Connect to the node.
 
@@ -903,10 +903,10 @@ class Node(Generic[ClientT]):
         player.dispatch_event(data)
 
     def voice_update(
-        self,
-        guild_id: int,
-        session_id: str,
-        data: VoiceServerUpdatePayload,
+            self,
+            guild_id: int,
+            session_id: str,
+            data: VoiceServerUpdatePayload,
     ) -> Coro[None]:
         """Send a voice update to the node.
 
@@ -989,16 +989,16 @@ class Node(Generic[ClientT]):
         )
 
     def update(
-        self,
-        *,
-        guild_id: int,
-        track: Track | str | None = MISSING,
-        position: int | None = None,
-        end_time: int | None = None,
-        volume: int | None = None,
-        no_replace: bool | None = None,
-        pause: bool | None = None,
-        filter: Filter | None = None,
+            self,
+            *,
+            guild_id: int,
+            track: Track | str | None = MISSING,
+            position: int | None = None,
+            end_time: int | None = None,
+            volume: int | None = None,
+            no_replace: bool | None = None,
+            pause: bool | None = None,
+            filter: Filter | None = None,
     ) -> Coro[PlayerPayload]:
         """Update a player.
 
@@ -1072,11 +1072,11 @@ class Node(Generic[ClientT]):
         return aiohttp.ClientSession(json_serialize=dumps)
 
     async def __request(
-        self,
-        method: str,
-        path: str,
-        json: OutgoingMessage | None = None,
-        params: OutgoingParams | None = None,
+            self,
+            method: str,
+            path: str,
+            json: OutgoingMessage | None = None,
+            params: OutgoingParams | None = None,
     ) -> Any:  # noqa: ANN401
         """Send a request to the node.
 
@@ -1110,11 +1110,11 @@ class Node(Generic[ClientT]):
             extra={"label": self._label},
         )
         async with session.request(
-            method,
-            uri,
-            json=json,
-            params=params,
-            headers={"Authorization": self.__password}
+                method,
+                uri,
+                json=json,
+                params=params,
+                headers={"Authorization": self.__password}
         ) as resp:
             _log.debug("Received status %s from lavalink.", resp.status)
             if resp.status == 204:
@@ -1141,7 +1141,7 @@ class Node(Generic[ClientT]):
             return json
 
     async def fetch_tracks(  # noqa: PLR0911  # V3/V4 compat.
-        self, query: str, *, search_type: str
+            self, query: str, *, search_type: str
     ) -> list[Track] | Playlist | None:
         r"""Fetch tracks from the node.
 
@@ -1303,10 +1303,10 @@ class Node(Generic[ClientT]):
         await self.__request("POST", "routeplanner/free/all")
 
     async def _add_unknown_player(
-        self,
-        player_id: int,
-        state: PlayerPayload,
-        cls: type[Player[ClientT]] | None = None,
+            self,
+            player_id: int,
+            state: PlayerPayload,
+            cls: type[Player[ClientT]] | None = None,
     ) -> None:
         """Add an unknown player to the node.
 
@@ -1362,7 +1362,7 @@ class Node(Generic[ClientT]):
         self.remove_player(player_id)
 
     async def sync_players(
-        self, player_cls: type[Player[ClientT]] | None = None
+            self, player_cls: type[Player[ClientT]] | None = None
     ) -> None:
         """Sync the players with the node.
 
@@ -1399,8 +1399,11 @@ class Node(Generic[ClientT]):
         )
 
     async def subscribe_to_lyrics(self, guild_id: int, skip_track_source: bool) -> None:
-        """
-        Subscribe to Lyrics events. Requires Lavalyrics plugin to be installed.
+        """Subscribe to lyrics-related events.
+
+        This requires the `LavaLyrics`_ plugin to be installed.
+
+        .. _LavaLyrics: https://github.com/topi314/LavaLyrics/
 
         Parameters
         ----------
@@ -1409,10 +1412,74 @@ class Node(Generic[ClientT]):
         skip_track_source:
             Skip the current track source and fetch from highest priority source
         """
-        data = await self.__request(
+        await self.__request(
             "POST", f"sessions/{self._session_id}/players/{guild_id}/lyrics/subscribe",
             params={
                 "skipTrackSource": str(skip_track_source)
             }
         )
-        _log.debug("Subscribe data: %s", data)
+
+    async def unsubscribe_from_lyrics(self, guild_id: int) -> None:
+        """Unsubscribe from lyrics-related events.
+
+        This requires the `LavaLyrics`_ plugin to be installed.
+
+        .. _LavaLyrics: https://github.com/topi314/LavaLyrics/
+
+        Parameters
+        ----------
+        guild_id:
+            The guild that will no longer receive lyrics events
+        """
+        await self.__request(
+            "DELETE", f"sessions/{self._session_id}/players/{guild_id}/lyrics/subscribe"
+        )
+
+    async def get_playing_lyrics(self, guild_id: int, skip_track_source: bool) -> LyricsObject:
+        """Gets the lyrics of the current playing track.
+        By default, it will try to fetch the lyrics from where the track is sourced from.
+
+        This requires the `LavaLyrics`_ plugin to be installed.
+
+        .. _LavaLyrics: https://github.com/topi314/LavaLyrics/
+
+        Parameters
+        ----------
+        guild_id:
+            The guild that with playing track
+        skip_track_source:
+            Skip the current track source and fetch from highest priority source
+        """
+        data = await self.__request(
+            "GET", f"sessions/{self._session_id}/players/{guild_id}/track/lyrics",
+            params={
+                "skipTrackSource": str(skip_track_source)
+            }
+        )
+        # logger.debug
+        return LyricsObject(data)
+
+    async def get_lyrics(self, track: str, skip_track_source: bool) -> LyricsObject:
+        """Gets the lyrics for a given encoded track.
+        By default, it will try to fetch the lyrics from where the track is sourced from.
+
+        This requires the `LavaLyrics`_ plugin to be installed.
+
+        .. _LavaLyrics: https://github.com/topi314/LavaLyrics/
+
+        Parameters
+        ----------
+        track:
+            The encoded track to fetch lyrics for
+        skip_track_source:
+            Skip the current track source and fetch from highest priority source
+        """
+        data = await self.__request(
+            "GET", f"lyrics",
+            params={
+                "track": track,
+                "skipTrackSource": str(skip_track_source)
+            }
+        )
+        # logger.debug
+        return LyricsObject(data)
