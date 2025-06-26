@@ -26,7 +26,7 @@ __all__ = (
     "WebSocketClosedEvent",
     "LyricsFoundEvent",
     "LyricsNotFoundEvent",
-    "LyricsLineEvent"
+    "LyricsLineEvent",
 )
 
 
