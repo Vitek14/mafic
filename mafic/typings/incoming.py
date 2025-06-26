@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, TypedDict, Union
 
-from .common import Stats, TrackWithInfo
+from .common import Stats, TrackWithInfo, LyricsLine, LyricsObject
 from .misc import PayloadWithGuild
 
 if TYPE_CHECKING:
@@ -97,6 +97,26 @@ class TrackStuckEvent(PayloadWithGuild):
     # V4
     track: NotRequired[TrackWithInfo]
     thresholdMs: int
+
+
+class LyricsFoundEvent(PayloadWithGuild):
+    lyrics: LyricsObject
+    op: Literal["event"]
+    type: Literal["LyricsFoundEvent"]
+
+
+class LyricsNotFoundEvent(PayloadWithGuild):
+    # "This event does not contain any additional fields."
+    op: Literal["event"]
+    type: Literal["LyricsNotFoundEvent"]
+
+
+class LyricsLineEvent(PayloadWithGuild):
+    lineIndex: int
+    line: LyricsLine
+    skipped: bool
+    op: Literal["event"]
+    type: Literal["LyricsLineEvent"]
 
 
 class ReadyPayload(TypedDict):
