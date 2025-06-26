@@ -9,7 +9,6 @@ from enum import Enum
 from typing import TYPE_CHECKING, Generic, TypeVar
 
 from .__libraries import VoiceProtocol
-from .typings.common import LyricsObject, LyricsLine
 
 if TYPE_CHECKING:
     from .track import Track
@@ -20,6 +19,7 @@ if TYPE_CHECKING:
         TrackStuckEvent as TrackStuckEventPayload,
         WebSocketClosedEvent as WebSocketClosedEventPayload,
     )
+    from .typings.common import LyricsLine, LyricsObject
 
 
 # This needs HKTs in python - as Player is generic on ClientT.
@@ -103,6 +103,7 @@ class LyricsLineEvent(Generic[PlayerT]):
     line: :class:`LyricsLine`
         Information about the lyrics line.
     """
+
     __slots__ = ("guildId", "line")
 
     def __init__(self, *, guildId: str, line: LyricsLine) -> None:
@@ -124,6 +125,7 @@ class LyricsFoundEvent(Generic[PlayerT]):
     lyrics: :class:`LyricsObject`
         Information about all lyrics, including provider and platform.
     """
+
     __slots__ = ("guildId", "lyrics")
 
     def __init__(self, *, guildId: str, lyrics: LyricsObject) -> None:
@@ -143,6 +145,7 @@ class LyricsNotFoundEvent(Generic[PlayerT]):
     guildId: :class:`str`
         The guild ID that received event.
     """
+
     __slots__ = ("guildId",)
 
     def __init__(self, *, guildId: str) -> None:

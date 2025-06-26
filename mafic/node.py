@@ -31,10 +31,11 @@ from .track import Track
 from .type_variables import ClientT
 from .typings import (
     BalancingIPRouteDetails,
+    LyricsObject,
     NanoIPRouteDetails,
     RotatingIPRouteDetails,
     RotatingNanoIPRouteDetails,
-    TrackWithInfo, LyricsObject,
+    TrackWithInfo,
 )
 from .warnings import *
 
@@ -1398,7 +1399,9 @@ class Node(Generic[ClientT]):
             ),
         )
 
-    async def subscribe_to_lyrics(self, guild_id: int, skip_track_source: bool) -> None:
+    async def subscribe_to_lyrics(
+            self, guild_id: int, *, skip_track_source: bool = False
+    ) -> None:
         """Subscribe to lyrics-related events.
 
         This requires the `LavaLyrics`_ plugin to be installed.
@@ -1435,9 +1438,12 @@ class Node(Generic[ClientT]):
             "DELETE", f"sessions/{self._session_id}/players/{guild_id}/lyrics/subscribe"
         )
 
-    async def get_playing_lyrics(self, guild_id: int, skip_track_source: bool) -> LyricsObject:
-        """Gets the lyrics of the current playing track.
-        By default, it will try to fetch the lyrics from where the track is sourced from.
+    async def get_playing_lyrics(
+            self, guild_id: int, *, skip_track_source: bool = False
+    ) -> LyricsObject:
+        """Get the lyrics of the current playing track.
+
+        By default, it will try to fetch the lyrics from where the track is sourced from
 
         This requires the `LavaLyrics`_ plugin to be installed.
 
@@ -1459,9 +1465,12 @@ class Node(Generic[ClientT]):
         # logger.debug
         return LyricsObject(data)
 
-    async def get_lyrics(self, track: str, skip_track_source: bool) -> LyricsObject:
-        """Gets the lyrics for a given encoded track.
-        By default, it will try to fetch the lyrics from where the track is sourced from.
+    async def get_lyrics(
+            self, track: str, *, skip_track_source: bool = False
+    ) -> LyricsObject:
+        """Get the lyrics for a given encoded track.
+
+        By default, it will try to fetch the lyrics from where the track is sourced from
 
         This requires the `LavaLyrics`_ plugin to be installed.
 
@@ -1475,7 +1484,7 @@ class Node(Generic[ClientT]):
             Skip the current track source and fetch from highest priority source
         """
         data = await self.__request(
-            "GET", f"lyrics",
+            "GET", "lyrics",
             params={
                 "track": track,
                 "skipTrackSource": str(skip_track_source)
