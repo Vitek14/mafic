@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal, TypedDict
 
-from . import PluginData
 from .misc import PayloadWithGuild
 
 if TYPE_CHECKING:
     from typing_extensions import NotRequired
+
+    from . import PluginData
 
 __all__ = (
     "Filters",
